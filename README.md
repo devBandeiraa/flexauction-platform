@@ -1,4 +1,4 @@
-# AuctionHub
+# FlexAuction
 
 Plataforma de leilões online — imóveis, veículos e outros bens — com lances em tempo real, busca avançada e painel do usuário. Monorepo com backend Express/Prisma e frontend React/Vite.
 
