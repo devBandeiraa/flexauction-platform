@@ -1,3 +1,4 @@
+import { createServer } from 'node:http';
 import path from 'node:path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -10,6 +11,8 @@ import { auctionRouter } from './routes/auction.routes.js';
 import { authRouter } from './routes/auth.routes.js';
 import { meRouter } from './routes/me.routes.js';
 import { categoriesRouter, searchRouter } from './routes/meta.routes.js';
+import { startAuctionCloser } from './services/auctionCloser.js';
+import { initSocket } from './sockets/index.js';
 
 const app = express();
 
@@ -32,6 +35,10 @@ app.use('/api/me', meRouter);
 
 app.use(errorHandler);
 
-app.listen(env.PORT, () => {
+const httpServer = createServer(app);
+initSocket(httpServer, env.CORS_ORIGIN);
+startAuctionCloser();
+
+httpServer.listen(env.PORT, () => {
   logger.info(`Server listening on port ${env.PORT}`);
 });

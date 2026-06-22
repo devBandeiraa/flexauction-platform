@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import * as bidService from '../services/bid.service.js';
+import { emitAuctionExtended, emitBidNew } from '../sockets/index.js';
 import { AppError } from '../utils/AppError.js';
 
 function requireUser(req: Request) {
@@ -16,6 +17,19 @@ export async function listBidsHandler(req: Request, res: Response): Promise<void
 
 export async function placeBidHandler(req: Request, res: Response): Promise<void> {
   const user = requireUser(req);
-  const bid = await bidService.placeBid(req.params.id!, user.id, req.body.value);
-  res.status(201).json(bid);
+  const auctionId = req.params.id!;
+  const result = await bidService.placeBid(auctionId, user.id, req.body.value);
+
+  emitBidNew({
+    loteId: auctionId,
+    valor: Number(result.bid.value),
+    totalLances: result.totalBids,
+    encerraEm: result.endsAt.toISOString(),
+  });
+
+  if (result.extended) {
+    emitAuctionExtended({ loteId: auctionId, novoEncerramento: result.endsAt.toISOString() });
+  }
+
+  res.status(201).json(result.bid);
 }
