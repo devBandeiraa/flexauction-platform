@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 import { env } from '../config/env.js';
 import { logger } from '../config/logger.js';
@@ -7,6 +8,11 @@ import { AppError } from '../utils/AppError.js';
 export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof ZodError) {
     res.status(400).json({ message: 'Validation error', errors: err.flatten().fieldErrors });
+    return;
+  }
+
+  if (err instanceof MulterError) {
+    res.status(400).json({ message: `Upload error: ${err.message}` });
     return;
   }
 
