@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  AUCTIONEER
+}
+
+enum Category {
+  IMOVEL
+  VEICULO
+  OUTROS
+}
+
+enum AuctionStatus {
+  UPCOMING
+  LIVE
+  CLOSED
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  cpf           String         @unique
+  password      String
+  role          Role           @default(USER)
+  bids          Bid[]
+  favorites     Favorite[]
+  auctions      Auction[]      @relation("AuctioneerAuctions")
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Auction {
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  category     Category
+  images       String[]
+  city         String
+  state        String
+  startPrice   Decimal
+  currentBid   Decimal
+  appraisal    Decimal?
+  startsAt     DateTime
+  endsAt       DateTime
+  status       AuctionStatus @default(UPCOMING)
+  bids         Bid[]
+  favorites    Favorite[]
+  auctioneer   User          @relation("AuctioneerAuctions", fields: [auctioneerId], references: [id])
+  auctioneerId String
+  createdAt    DateTime      @default(now())
+}
+
+model Bid {
+  id        String   @id @default(cuid())
+  value     Decimal
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+  auctionId String
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  auction   Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  auctionId String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, auctionId])
+}
