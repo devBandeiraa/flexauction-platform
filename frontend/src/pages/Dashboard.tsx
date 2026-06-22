@@ -39,21 +39,38 @@ export function Dashboard() {
   const { user } = useAuth();
   const [tab, setTab] = useState<Tab>('bids');
 
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold text-text-primary">Meu painel</h1>
+  // Deduped by react-query (same keys the tabs use) — just for the summary stats.
+  const { data: bids } = useQuery({ queryKey: ['me', 'bids'], queryFn: getMyBids });
+  const { data: favorites } = useFavorites();
 
-      <div className="mb-6 flex gap-1 border-b border-border">
+  const activeBids =
+    bids?.filter((b) => b.auction.status === 'LIVE').length ?? 0;
+
+  return (
+    <div className="mx-auto max-w-[1200px] px-6 py-8">
+      <h1 className="font-display text-2xl font-bold text-ink">Meu painel</h1>
+      <p className="mt-1 text-muted-foreground">
+        Olá, {user?.name?.split(' ')[0] ?? 'visitante'} 👋 Acompanhe seus leilões.
+      </p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <StatCard label="Lances dados" value={bids?.length ?? 0} icon={Gavel} />
+        <StatCard label="Lances ativos" value={activeBids} icon={Gavel} />
+        <StatCard label="Favoritos" value={favorites?.length ?? 0} icon={Heart} />
+      </div>
+
+      <div className="mb-6 mt-8 flex gap-1 border-b border-line">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
+            aria-current={tab === t.id ? 'page' : undefined}
             className={cn(
               'flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-medium transition-colors',
               tab === t.id
-                ? 'border-accent text-accent'
-                : 'border-transparent text-muted-foreground hover:text-text-primary',
+                ? 'border-brand-pink text-brand-pink'
+                : 'border-transparent text-muted-foreground hover:text-ink',
             )}
           >
             <t.icon className="size-4" /> {t.label}
@@ -66,6 +83,28 @@ export function Dashboard() {
       {tab === 'profile' && user && (
         <ProfileTab name={user.name} email={user.email} role={user.role} />
       )}
+    </div>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+}: {
+  label: string;
+  value: number;
+  icon: typeof Gavel;
+}) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 shadow-card">
+      <span className="grid size-10 place-items-center rounded-full bg-brand-pink/10 text-brand-pink">
+        <Icon className="size-5" />
+      </span>
+      <div>
+        <p className="font-display text-2xl font-bold tabular-nums text-ink">{value}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
+      </div>
     </div>
   );
 }
@@ -84,9 +123,9 @@ function BidsTab() {
           <li key={bid.id}>
             <Link
               to={`/lote/${bid.auction.id}`}
-              className="flex items-center gap-4 rounded-lg border border-border bg-card p-3 transition-shadow hover:shadow-md"
+              className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-3 shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover"
             >
-              <div className="size-16 shrink-0 overflow-hidden rounded-md">
+              <div className="size-16 shrink-0 overflow-hidden rounded-xl">
                 <AuctionImage
                   images={bid.auction.images}
                   alt={bid.auction.title}
@@ -95,11 +134,14 @@ function BidsTab() {
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <span className="block truncate font-medium text-text-primary">
+                <span className="block truncate font-medium text-ink">
                   {bid.auction.title}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  Seu lance: <span className="font-mono">{formatCurrency(bid.value)}</span>
+                  Seu lance:{' '}
+                  <span className="font-semibold tabular-nums text-ink">
+                    {formatCurrency(bid.value)}
+                  </span>
                 </span>
               </div>
               <span
@@ -136,7 +178,7 @@ function FavoritesTab() {
 
 function ProfileTab({ name, email, role }: { name: string; email: string; role: string }) {
   return (
-    <dl className="max-w-md space-y-4 rounded-lg border border-border bg-card p-5">
+    <dl className="max-w-md space-y-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
       <Field label="Nome" value={name} />
       <Field label="E-mail" value={email} />
       <Field label="Perfil" value={role === 'AUCTIONEER' ? 'Leiloeiro' : 'Participante'} />
@@ -165,9 +207,9 @@ function ListSkeleton() {
 
 function Empty({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-border py-16 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line py-16 text-center">
       <p className="text-muted-foreground">{message}</p>
-      <Link to="/busca" className="text-sm font-medium text-accent hover:underline">
+      <Link to="/busca" className="text-sm font-medium text-brand-pink hover:underline">
         Explorar leilões
       </Link>
     </div>

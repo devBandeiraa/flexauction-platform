@@ -5,7 +5,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { StatusBadge } from './StatusBadge';
-import { Countdown } from './Countdown';
+import { CategoryBadge } from './CategoryBadge';
+import { CountdownBoxes } from './CountdownBoxes';
 import { BidHistory } from './BidHistory';
 import { placeBid } from '@/services/auctions.api';
 import { ApiError } from '@/services/api';
@@ -72,91 +73,110 @@ export function BidPanel({ auction }: { auction: Auction }) {
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${auction.title} — ${window.location.href}`)}`;
 
   return (
-    <div className="space-y-4 rounded-lg border border-border bg-card p-5">
+    <div className="space-y-5 rounded-2xl border border-line bg-surface p-5 shadow-card">
       <div className="flex items-center justify-between">
+        <CategoryBadge category={auction.category} className="shadow-none" />
         <StatusBadge status={auction.status} />
-        {isLive ? (
-          <Countdown target={auction.endsAt} className="text-lg font-bold text-accent" />
-        ) : null}
       </div>
 
       <div>
         <span className="block text-sm text-muted-foreground">Lance atual</span>
-        <span className="font-mono text-3xl font-extrabold text-primary">
+        <span className="font-display text-3xl font-bold tabular-nums text-ink">
           {formatCurrency(auction.currentBid)}
         </span>
       </div>
 
+      {isLive && (
+        <div className="rounded-xl bg-bg p-3">
+          <p className="mb-2 text-xs text-muted-foreground">Encerra em</p>
+          <CountdownBoxes target={auction.endsAt} />
+        </div>
+      )}
+
       {isLive && !isOwner && (
         <form onSubmit={submitBid} className="space-y-2" noValidate>
-          <label htmlFor="bid-input" className="text-sm text-muted-foreground">
-            Lance mínimo: <span className="font-mono">{formatCurrency(minNext)}</span>
+          <label htmlFor="bid-input" className="block text-sm text-muted-foreground">
+            Próximo lance mínimo:{' '}
+            <span className="font-semibold tabular-nums text-ink">{formatCurrency(minNext)}</span>
           </label>
-          <div className="flex gap-2">
-            <Input
-              id="bid-input"
-              type="number"
-              inputMode="decimal"
-              step="0.01"
-              min={minNext}
-              placeholder={String(minNext)}
-              value={value}
-              onChange={(e) => {
-                setValue(e.target.value);
-                setFieldError(null);
-              }}
-              className="font-mono"
-            />
-            <Button type="submit" disabled={mutation.isPending} className="bg-accent hover:bg-accent/90">
-              {mutation.isPending ? 'Enviando...' : 'Dar Lance'}
-            </Button>
-          </div>
-          {fieldError && <p className="text-sm text-destructive">{fieldError}</p>}
+          <Input
+            id="bid-input"
+            type="number"
+            inputMode="decimal"
+            step="0.01"
+            min={minNext}
+            placeholder={String(minNext)}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              setFieldError(null);
+            }}
+            className="h-11 rounded-xl tabular-nums"
+            aria-invalid={fieldError ? true : undefined}
+            aria-describedby={fieldError ? 'bid-error' : undefined}
+          />
+          <Button
+            type="submit"
+            variant="gradient"
+            size="lg"
+            disabled={mutation.isPending}
+            className="w-full"
+          >
+            {mutation.isPending ? 'Enviando...' : 'Dar lance'}
+          </Button>
+          {fieldError && (
+            <p id="bid-error" role="alert" className="text-sm text-destructive">
+              {fieldError}
+            </p>
+          )}
         </form>
       )}
 
       {isLive && isOwner && (
-        <p className="rounded-md bg-secondary p-3 text-sm text-muted-foreground">
+        <p className="rounded-xl bg-secondary p-3 text-sm text-muted-foreground">
           Você é o leiloeiro deste lote e não pode dar lances.
         </p>
       )}
 
       {!isLive && (
-        <p className="rounded-md bg-secondary p-3 text-sm text-muted-foreground">
+        <p className="rounded-xl bg-secondary p-3 text-sm text-muted-foreground">
           {auction.status === 'UPCOMING'
             ? 'Este leilão ainda não começou.'
             : 'Este leilão está encerrado.'}
         </p>
       )}
 
-      <div className="flex gap-2">
+      <div className="space-y-2">
         <Button
           type="button"
           variant="outline"
-          className="flex-1 gap-2"
+          size="lg"
+          className="w-full gap-2"
           onClick={() => (isAuthenticated ? toggle() : openAuth('login'))}
           disabled={favPending}
         >
-          <Heart className={cn('size-4', isFavorited && 'fill-accent text-accent')} />
-          {isFavorited ? 'Favoritado' : 'Favoritar'}
+          <Heart className={cn('size-4', isFavorited && 'fill-brand-pink text-brand-pink')} />
+          {isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
         </Button>
-        <Button type="button" variant="outline" className="gap-2" onClick={share}>
-          <Share2 className="size-4" /> Compartilhar
-        </Button>
-        <Button asChild variant="outline" size="icon" aria-label="Compartilhar no WhatsApp">
-          <a href={whatsappUrl} target="_blank" rel="noreferrer">
-            <MessageCircle className="size-4" />
-          </a>
-        </Button>
+        <div className="flex gap-2">
+          <Button type="button" variant="ghost" className="flex-1 gap-2" onClick={share}>
+            <Share2 className="size-4" /> Compartilhar
+          </Button>
+          <Button asChild variant="ghost" size="icon" aria-label="Compartilhar no WhatsApp">
+            <a href={whatsappUrl} target="_blank" rel="noreferrer">
+              <MessageCircle className="size-4" />
+            </a>
+          </Button>
+        </div>
       </div>
 
-      <div className="border-t border-border pt-4">
-        <h3 className="mb-2 text-sm font-semibold text-text-primary">Lances recentes</h3>
+      <div className="border-t border-line pt-4">
+        <h3 className="mb-2 text-sm font-semibold text-ink">Lances recentes</h3>
         <BidHistory auctionId={auction.id} />
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Leiloeiro: <span className="font-medium text-text-primary">{auction.auctioneer.name}</span>
+        Leiloeiro: <span className="font-medium text-ink">{auction.auctioneer.name}</span>
       </p>
     </div>
   );
