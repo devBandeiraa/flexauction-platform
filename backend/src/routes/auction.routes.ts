@@ -6,16 +6,26 @@ import {
   listAuctionsHandler,
   updateAuctionHandler,
 } from '../controllers/auction.controller.js';
+import { listBidsHandler, placeBidHandler } from '../controllers/bid.controller.js';
 import { requireAuth, requireRole } from '../middlewares/auth.js';
 import { uploadAuctionImages } from '../middlewares/upload.js';
 import { validateBody } from '../middlewares/validate.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { createAuctionSchema, updateAuctionSchema } from './auction.validators.js';
+import { placeBidSchema } from './bid.validators.js';
 
 export const auctionRouter = Router();
 
 auctionRouter.get('/', asyncHandler(listAuctionsHandler));
 auctionRouter.get('/:id', asyncHandler(getAuctionHandler));
+
+auctionRouter.get('/:id/bids', asyncHandler(listBidsHandler));
+auctionRouter.post(
+  '/:id/bids',
+  requireAuth,
+  validateBody(placeBidSchema),
+  asyncHandler(placeBidHandler),
+);
 
 auctionRouter.post(
   '/',
