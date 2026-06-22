@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { Layout } from '@/components/layout/Layout';
+import { RequireAuth } from '@/components/RequireAuth';
 import { useBootstrapAuth } from '@/hooks/useAuth';
 import { Home } from '@/pages/Home';
 import { Search } from '@/pages/Search';
@@ -19,7 +20,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/busca" element={<Search />} />
           <Route path="/lote/:id" element={<AuctionDetail />} />
-          <Route path="/painel" element={<Dashboard />} />
+          <Route
+            path="/painel"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
           <Route path="/como-funciona" element={<ComoFunciona />} />
           <Route path="*" element={<NotFound />} />
         </Route>
