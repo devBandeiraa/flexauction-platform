@@ -48,3 +48,26 @@ export function updateAuction(id: string, data: Prisma.AuctionUpdateInput) {
 export function deleteAuction(id: string) {
   return prisma.auction.delete({ where: { id } });
 }
+
+export function searchAuctions(query: string, take: number) {
+  return prisma.auction.findMany({
+    where: {
+      OR: [
+        { title: { contains: query, mode: 'insensitive' } },
+        { city: { contains: query, mode: 'insensitive' } },
+      ],
+    },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      city: true,
+      state: true,
+      status: true,
+      currentBid: true,
+      images: true,
+    },
+    orderBy: { endsAt: 'asc' },
+    take,
+  });
+}

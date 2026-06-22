@@ -149,3 +149,9 @@ export async function deleteAuction(id: string, auctioneerId: string) {
   await loadOwnedAuction(id, auctioneerId);
   await auctionRepository.deleteAuction(id);
 }
+
+const SEARCH_LIMIT = 8;
+
+export function searchAuctions(query: string) {
+  return auctionRepository.searchAuctions(query, SEARCH_LIMIT);
+}

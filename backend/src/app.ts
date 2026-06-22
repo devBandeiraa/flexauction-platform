@@ -8,6 +8,8 @@ import { logger } from './config/logger.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { auctionRouter } from './routes/auction.routes.js';
 import { authRouter } from './routes/auth.routes.js';
+import { meRouter } from './routes/me.routes.js';
+import { categoriesRouter, searchRouter } from './routes/meta.routes.js';
 
 const app = express();
 
@@ -24,6 +26,9 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/auctions', auctionRouter);
+app.use('/api/categories', categoriesRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/me', meRouter);
 
 app.use(errorHandler);
 
