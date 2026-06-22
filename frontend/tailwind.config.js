@@ -12,6 +12,21 @@ export default {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        brand: {
+          pink: 'hsl(var(--brand-pink) / <alpha-value>)',
+          orange: 'hsl(var(--brand-orange) / <alpha-value>)',
+          cyan: 'hsl(var(--brand-cyan) / <alpha-value>)',
+        },
+        ink: {
+          DEFAULT: 'hsl(var(--ink) / <alpha-value>)',
+          soft: 'hsl(var(--ink-soft) / <alpha-value>)',
+        },
+        line: 'hsl(var(--line) / <alpha-value>)',
+        surface: 'hsl(var(--surface) / <alpha-value>)',
+        bg: 'hsl(var(--bg) / <alpha-value>)',
+        // Aliases kept so existing utility classes across the app resolve to brand tokens.
+        'text-primary': 'hsl(var(--ink) / <alpha-value>)',
+        'accent-alt': 'hsl(var(--brand-orange) / <alpha-value>)',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -51,8 +66,23 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+      },
+      boxShadow: {
+        card: 'var(--shadow-card)',
+        'card-hover': 'var(--shadow-card-hover)',
+        float: 'var(--shadow-float)',
+      },
+      backgroundImage: {
+        'gradient-brand': 'var(--gradient-brand)',
+      },
+      keyframes: {
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(8px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
       },
     },
   },

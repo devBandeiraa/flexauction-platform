@@ -26,7 +26,7 @@ export function ComoFunciona() {
       <header className="text-center">
         <h1 className="text-3xl font-bold text-text-primary">Como funciona</h1>
         <p className="mt-2 text-muted-foreground">
-          Participar dos leilões do AuctionHub é simples, rápido e seguro.
+          Participar dos leilões da FlexAuction é simples, rápido e seguro.
         </p>
       </header>
 

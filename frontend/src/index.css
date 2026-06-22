@@ -4,33 +4,106 @@
 
 @layer base {
   :root {
-    --background: 210 17% 98%;
-    --foreground: 210 9% 16%;
+    /* ---- Brand palette (HSL channels, so /opacity modifiers work) ---- */
+    --brand-pink: 343 78% 53%; /* #E5295E */
+    --brand-orange: 19 100% 62%; /* #FF7A3D */
+    --brand-cyan: 190 73% 49%; /* #22B8D6 */
+    --gradient-brand: linear-gradient(135deg, hsl(343 78% 53%) 0%, hsl(19 100% 62%) 100%);
+
+    --ink: 215 28% 17%; /* #1F2937 */
+    --ink-soft: 217 19% 27%; /* #374151 */
+    --muted-text: 220 9% 46%; /* #6B7280 */
+    --line: 220 13% 91%; /* #E5E7EB */
+    --surface: 0 0% 100%; /* #FFFFFF */
+    --bg: 220 27% 98%; /* #F8F9FB */
+
+    /* ---- Layered shadows ---- */
+    --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
+    --shadow-card-hover: 0 12px 32px rgba(16, 24, 40, 0.12);
+    --shadow-float: 0 20px 48px rgba(16, 24, 40, 0.18);
+
+    /* ---- shadcn tokens (HSL triplets) remapped to the brand ---- */
+    --background: 220 27% 98%;
+    --foreground: 215 28% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 210 9% 16%;
+    --card-foreground: 215 28% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 210 9% 16%;
-    --primary: 240 28% 14%;
+    --popover-foreground: 215 28% 17%;
+    --primary: 215 28% 17%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 14% 91%;
-    --secondary-foreground: 210 9% 16%;
-    --muted: 210 14% 91%;
-    --muted-foreground: 208 7% 46%;
-    --accent: 355 78% 56%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 215 28% 17%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 343 78% 53%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 355 78% 56%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --success: 142 60% 47%;
+    --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
-    --border: 210 14% 91%;
-    --input: 210 14% 91%;
-    --ring: 240 28% 14%;
-    --radius: 0.5rem;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 343 78% 53%;
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  /* Primary brand gradient surface — buttons, banners, highlights. */
+  .bg-gradient-brand {
+    background-image: var(--gradient-brand);
+  }
+
+  /* Animated nav underline (left→right on hover / active). */
+  .nav-underline {
+    @apply relative;
+  }
+  .nav-underline::after {
+    content: '';
+    @apply absolute inset-x-3 bottom-1 h-0.5 origin-left scale-x-0 rounded-full bg-brand-pink transition-transform duration-200 ease-out;
+  }
+  .nav-underline:hover::after,
+  .nav-underline[data-active='true']::after {
+    @apply scale-x-100;
+  }
+}
+
+@layer utilities {
+  /* Subtle entrance: fade + 8px rise. */
+  .animate-fade-up {
+    animation: fade-up 0.5s ease both;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

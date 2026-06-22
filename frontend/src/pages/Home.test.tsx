@@ -22,6 +22,8 @@ function renderHome() {
 describe('Home', () => {
   it('renders the hero headline', () => {
     renderHome();
-    expect(screen.getByRole('heading', { name: 'Arremate o que importa.' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Os melhores negócios você encontra aqui/i }),
+    ).toBeInTheDocument();
   });
 });

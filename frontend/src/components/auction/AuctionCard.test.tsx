@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { describe, expect, it } from 'vitest';
 import { AuctionCard } from './AuctionCard';
 import type { Auction } from '@/types';
@@ -24,10 +25,13 @@ const baseAuction: Auction = {
 };
 
 function renderCard(auction: Auction) {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
-    <MemoryRouter>
-      <AuctionCard auction={auction} />
-    </MemoryRouter>,
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <AuctionCard auction={auction} />
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 }
 
