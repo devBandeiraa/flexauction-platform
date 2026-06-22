@@ -32,6 +32,14 @@ export function formatCountdown(msRemaining: number): string {
   return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 }
 
+const MIN_INCREMENT_RATE = 0.01;
+
+/** Mirrors the backend rule: a bid must beat the current value by 1% (ceil to cents). */
+export function minimumNextBid(currentBid: string | number): number {
+  const num = typeof currentBid === 'string' ? Number(currentBid) : currentBid;
+  return Math.ceil(num * (1 + MIN_INCREMENT_RATE) * 100) / 100;
+}
+
 export const CATEGORY_LABELS: Record<string, string> = {
   IMOVEL: 'Imóveis',
   VEICULO: 'Veículos',
