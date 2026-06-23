@@ -38,7 +38,7 @@ export function Newsletter() {
               Receba oportunidades exclusivas antes de todos
             </h2>
             <p className="mt-1 text-white/80">
-              Cadastre-se e receba em primeira mão os melhores leilões. Não enviamos spam.
+              Cadastre-se e receba novos leilões em primeira mão.
             </p>
           </div>
         </div>
@@ -80,6 +80,9 @@ export function Newsletter() {
                 {error}
               </p>
             )}
+            <p className="mt-2 text-xs text-white/70">
+              Não enviamos spam. Cancelar inscrição a qualquer momento.
+            </p>
           </form>
         )}
       </div>

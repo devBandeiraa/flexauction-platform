@@ -6,7 +6,7 @@ import { Reveal } from '@/components/shared/Reveal';
 import { listAuctions } from '@/services/auctions.api';
 import type { Category } from '@/types';
 
-const IMG = '?auto=format&fit=crop&w=900&q=80';
+const IMG = '?auto=format&fit=crop&w=600&q=80';
 
 interface CategoryTile {
   value: Category;
@@ -59,30 +59,31 @@ function CategoryTileCard({ tile, count }: { tile: CategoryTile; count?: number 
   return (
     <Link
       to={`/leiloes?categoria=${tile.value}`}
-      className="group relative block aspect-[16/10] overflow-hidden rounded-3xl bg-ink-deep shadow-card transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-card transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
     >
-      {!broken && (
-        <img
-          src={tile.image}
-          alt=""
-          loading="lazy"
-          onError={() => setBroken(true)}
-          className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-        />
-      )}
-      <span className="absolute inset-0 bg-gradient-to-t from-ink-deep/90 via-ink-deep/40 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-white">
-        <div>
-          <span className="grid size-11 place-items-center rounded-full bg-white/15 backdrop-blur-sm">
-            <tile.icon className="size-5" />
-          </span>
-          <h3 className="mt-3 font-display text-lg font-semibold">{tile.label}</h3>
-        </div>
-        {count !== undefined && (
-          <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-            {count} {count === 1 ? 'lote' : 'lotes'}
-          </span>
+      <div className="relative aspect-[16/10] overflow-hidden bg-ink-deep">
+        {!broken && (
+          <img
+            src={tile.image}
+            alt=""
+            loading="lazy"
+            onError={() => setBroken(true)}
+            className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          />
         )}
+      </div>
+      <div className="flex items-center gap-2.5 p-3">
+        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-pink/10 text-brand-pink">
+          <tile.icon className="size-4" />
+        </span>
+        <div className="min-w-0">
+          <h3 className="truncate font-display text-sm font-semibold text-ink">{tile.label}</h3>
+          {count !== undefined && (
+            <p className="text-xs text-muted-foreground">
+              {count} {count === 1 ? 'lote' : 'lotes'}
+            </p>
+          )}
+        </div>
       </div>
     </Link>
   );
@@ -106,7 +107,7 @@ export function CategoriesSection() {
           to="/leiloes"
           className="text-sm font-medium text-brand-pink transition-colors hover:text-brand-orange"
         >
-          Ver todos
+          Ver todas
         </Link>
       </Reveal>
 

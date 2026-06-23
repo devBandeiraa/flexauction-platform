@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin } from 'lucide-react';
+import { ChevronRight, MapPin } from 'lucide-react';
 import { AuctionImage } from '@/components/auction/AuctionImage';
 import { CountdownBoxes } from '@/components/auction/CountdownBoxes';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,12 +27,20 @@ export function LiveAuctionsSection() {
   return (
     <section className="bg-surface">
       <div className="mx-auto max-w-[1200px] px-6 py-16">
-        <Reveal className="mb-6 flex items-center gap-3">
-          <span className="relative flex size-2.5">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-destructive opacity-75" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-destructive" />
-          </span>
-          <h2 className="text-2xl font-bold text-ink">Leilões Ao Vivo</h2>
+        <Reveal className="mb-6 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="relative flex size-2.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-destructive opacity-75" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-destructive" />
+            </span>
+            <h2 className="text-2xl font-bold text-ink">Leilões ao vivo</h2>
+          </div>
+          <Link
+            to="/leiloes?status=LIVE"
+            className="text-sm font-medium text-brand-pink transition-colors hover:text-brand-orange"
+          >
+            Ver todos
+          </Link>
         </Reveal>
 
         {isLoading ? (
@@ -42,6 +50,7 @@ export function LiveAuctionsSection() {
             ))}
           </div>
         ) : (
+          <div className="relative">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {live.map((auction) => (
               <Link
@@ -88,6 +97,14 @@ export function LiveAuctionsSection() {
                 </span>
               </Link>
             ))}
+          </div>
+            <Link
+              to="/leiloes?status=LIVE"
+              aria-label="Ver mais leilões ao vivo"
+              className="absolute -right-3 top-1/2 hidden size-10 -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-card transition hover:text-brand-pink lg:grid"
+            >
+              <ChevronRight className="size-5" />
+            </Link>
           </div>
         )}
       </div>

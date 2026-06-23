@@ -1,6 +1,6 @@
 import { Hero } from '@/components/home/Hero';
+import { SearchBar } from '@/components/home/SearchBar';
 import { CategoriesSection } from '@/components/home/CategoriesSection';
-import { WhyChoose } from '@/components/home/WhyChoose';
 import { LiveAuctionsSection } from '@/components/home/LiveAuctionsSection';
 import { DealsOfDaySection } from '@/components/home/DealsOfDaySection';
 import { HowItWorks } from '@/components/home/HowItWorks';
@@ -13,10 +13,10 @@ export function Home() {
   return (
     <>
       <Hero />
+      <SearchBar />
       <FeaturedAuctionsSection />
       <LiveAuctionsSection />
       <CategoriesSection />
-      <WhyChoose />
       <DealsOfDaySection />
       <HowItWorks />
       <TestimonialsSection />

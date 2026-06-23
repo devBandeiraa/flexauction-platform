@@ -80,12 +80,12 @@ export function Header() {
         scrolled ? 'border-line shadow-card' : 'border-transparent',
       )}
     >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-6">
+      <div className="relative mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-6">
         <Link to="/" aria-label="FlexAuction — início" className="shrink-0">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center lg:flex">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center lg:flex">
           <NavLink to="/" end className={navLinkClass}>
             Início
           </NavLink>

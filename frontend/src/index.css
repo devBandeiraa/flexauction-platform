@@ -82,6 +82,16 @@
       linear-gradient(160deg, hsl(var(--ink-deep)) 0%, hsl(var(--ink-night)) 100%);
   }
 
+  /* Stats band: deep navy on the left melting into the brand coral. */
+  .bg-gradient-stats {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--ink-deep)) 0%,
+      hsl(var(--ink-night)) 38%,
+      hsl(var(--brand-pink)) 100%
+    );
+  }
+
   /* Frosted glass panel for cards floating over imagery. */
   .glass-panel {
     background-color: hsl(0 0% 100% / 0.08);
