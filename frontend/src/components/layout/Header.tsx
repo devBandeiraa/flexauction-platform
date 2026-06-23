@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   ChevronDown,
   LayoutDashboard,
@@ -45,26 +45,50 @@ const SIMPLE_LINKS = [
   { to: '/contato', label: 'Contato' },
 ];
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  cn(
-    'nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink',
-    isActive && 'text-brand-pink',
-  );
+const HEADER_HEIGHT = 64; // h-16
 
 export function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [scrolled, setScrolled] = useState(false);
+  // True while the bar overlaps a dark hero section: render it transparent with
+  // light text so it blends into the background.
+  const [overHero, setOverHero] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Re-measure on navigation, scroll and resize. Robust to any hero height and
+  // self-corrects once a lazy-loaded page mounts its hero.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    const update = () => {
+      const hero = document.querySelector<HTMLElement>('[data-hero]');
+      setOverHero(!!hero && hero.getBoundingClientRect().bottom > HEADER_HEIGHT);
+      setScrolled(window.scrollY > 8);
+    };
+    update();
+    const raf = requestAnimationFrame(update);
+    const timer = setTimeout(update, 200);
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [pathname]);
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    cn(
+      'nav-underline px-3 py-2 text-sm font-medium transition-colors',
+      isActive
+        ? 'text-brand-pink'
+        : overHero
+          ? 'text-white/85 hover:text-white'
+          : 'text-ink-soft hover:text-brand-pink',
+    );
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -76,21 +100,31 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 border-b bg-surface/80 backdrop-blur-md transition-shadow',
-        scrolled ? 'border-line shadow-card' : 'border-transparent',
+        'sticky top-0 z-40 transition-colors',
+        overHero
+          ? 'bg-transparent'
+          : cn(
+              'border-b bg-surface/80 backdrop-blur-md',
+              scrolled ? 'border-line shadow-card' : 'border-transparent',
+            ),
       )}
     >
       <div className="relative mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-6">
-        <Link to="/" aria-label="FlexAuction — início" className="shrink-0">
-          <Logo />
+        <Link
+          to="/"
+          aria-label="FlexAuction — início"
+          className="shrink-0"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <Logo onDark={overHero} />
         </Link>
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center lg:flex">
           <NavLink to="/" end className={navLinkClass}>
             Início
           </NavLink>
-          <NavDropdown label="Leilões" items={LEILOES} />
-          <NavDropdown label="Categorias" items={CATEGORIAS} />
+          <NavDropdown label="Leilões" items={LEILOES} onDark={overHero} />
+          <NavDropdown label="Categorias" items={CATEGORIAS} onDark={overHero} />
           <NavLink to="/como-funciona" className={navLinkClass}>
             Como funciona
           </NavLink>
@@ -109,7 +143,9 @@ export function Header() {
             aria-label={searchOpen ? 'Fechar busca' : 'Abrir busca'}
             aria-expanded={searchOpen}
             onClick={() => setSearchOpen((v) => !v)}
-            className="text-ink-soft hover:text-brand-pink"
+            className={cn(
+              overHero ? 'text-white/85 hover:bg-white/10 hover:text-white' : 'text-ink-soft hover:text-brand-pink',
+            )}
           >
             {searchOpen ? <X /> : <SearchIcon />}
           </Button>
@@ -117,8 +153,17 @@ export function Header() {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <span className="grid size-7 place-items-center rounded-full bg-secondary">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn('gap-2', overHero && 'text-white hover:bg-white/10 hover:text-white')}
+                >
+                  <span
+                    className={cn(
+                      'grid size-7 place-items-center rounded-full',
+                      overHero ? 'bg-white/15' : 'bg-secondary',
+                    )}
+                  >
                     <UserIcon className="size-4" />
                   </span>
                   <span className="hidden max-w-24 truncate sm:inline">{user?.name}</span>
@@ -136,7 +181,15 @@ export function Header() {
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className={cn(
+                  overHero &&
+                    'border-white/30 bg-transparent text-white hover:border-white/60 hover:bg-white/10 hover:text-white',
+                )}
+              >
                 <Link to="/login">Entrar</Link>
               </Button>
               <Button asChild variant="gradient" size="sm">
@@ -150,7 +203,7 @@ export function Header() {
             size="icon"
             aria-label="Abrir menu"
             onClick={() => setMenuOpen(true)}
-            className="text-ink-soft lg:hidden"
+            className={cn('lg:hidden', overHero ? 'text-white/85 hover:bg-white/10 hover:text-white' : 'text-ink-soft')}
           >
             <Menu />
           </Button>
@@ -170,10 +223,23 @@ export function Header() {
   );
 }
 
-function NavDropdown({ label, items }: { label: string; items: { to: string; label: string }[] }) {
+function NavDropdown({
+  label,
+  items,
+  onDark = false,
+}: {
+  label: string;
+  items: { to: string; label: string }[];
+  onDark?: boolean;
+}) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="nav-underline flex items-center gap-1 px-3 py-2 text-sm font-medium text-ink-soft outline-none transition-colors hover:text-brand-pink data-[state=open]:text-brand-pink">
+      <DropdownMenuTrigger
+        className={cn(
+          'nav-underline flex items-center gap-1 px-3 py-2 text-sm font-medium outline-none transition-colors data-[state=open]:text-brand-pink',
+          onDark ? 'text-white/85 hover:text-white' : 'text-ink-soft hover:text-brand-pink',
+        )}
+      >
         {label}
         <ChevronDown className="size-3.5 transition-transform" />
       </DropdownMenuTrigger>

@@ -48,7 +48,7 @@ export function ComoFunciona() {
   return (
     <>
       {/* ---- Hero ---- */}
-      <section className="relative overflow-hidden bg-hero">
+      <section data-hero className="relative -mt-16 overflow-hidden bg-hero pt-16">
         <div className="mx-auto max-w-[1200px] px-6 pb-20 pt-16 text-center lg:pt-20">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/80">
             <Sparkles className="size-3.5 text-brand-pink" /> Como funciona
