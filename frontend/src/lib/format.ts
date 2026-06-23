@@ -43,6 +43,9 @@ export function minimumNextBid(currentBid: string | number): number {
 export const CATEGORY_LABELS: Record<string, string> = {
   IMOVEL: 'Imóveis',
   VEICULO: 'Veículos',
+  GALPAO: 'Galpões',
+  MAQUINA: 'Máquinas',
+  EMBARCACAO: 'Embarcações',
   OUTROS: 'Outros',
 };
 

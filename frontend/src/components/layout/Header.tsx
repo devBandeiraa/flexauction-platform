@@ -32,6 +32,9 @@ const LEILOES = [
 const CATEGORIAS = [
   { to: '/leiloes?categoria=IMOVEL', label: 'Imóveis' },
   { to: '/leiloes?categoria=VEICULO', label: 'Veículos' },
+  { to: '/leiloes?categoria=GALPAO', label: 'Galpões' },
+  { to: '/leiloes?categoria=MAQUINA', label: 'Máquinas' },
+  { to: '/leiloes?categoria=EMBARCACAO', label: 'Embarcações' },
   { to: '/leiloes?categoria=OUTROS', label: 'Outros' },
 ];
 

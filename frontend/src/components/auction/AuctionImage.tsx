@@ -24,6 +24,21 @@ const FALLBACKS: Record<Category, string[]> = {
     'https://images.unsplash.com/photo-1549924231-f129b911e442',
     'https://images.unsplash.com/photo-1494976388531-d1058494cdd8',
   ],
+  GALPAO: [
+    'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d',
+    'https://images.unsplash.com/photo-1565891741441-64926e441838',
+    'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  ],
+  MAQUINA: [
+    'https://images.unsplash.com/photo-1504307651254-35680f356dfd',
+    'https://images.unsplash.com/photo-1581094794329-c8112a89af12',
+    'https://images.unsplash.com/photo-1530124566582-a618bc2615dc',
+  ],
+  EMBARCACAO: [
+    'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
+    'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a',
+    'https://images.unsplash.com/photo-1540946485063-a40da27545f8',
+  ],
   OUTROS: [
     'https://images.unsplash.com/photo-1498049794561-7780e7231661',
     'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
