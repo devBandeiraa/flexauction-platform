@@ -50,14 +50,13 @@ describe('AuctionCard', () => {
     expect(screen.getByRole('link')).toHaveAttribute('href', '/leilao/a1');
   });
 
-  it('shows a discount badge when the bid is below the appraisal', () => {
+  it('shows a promo badge (ending soon, since it ends within 24h)', () => {
     renderCard(baseAuction);
-    // 400000 vs 800000 appraisal -> 50%
-    expect(screen.getByText('50% abaixo do avaliado')).toBeInTheDocument();
+    expect(screen.getByText(/Encerrando hoje/)).toBeInTheDocument();
   });
 
-  it('omits the discount badge without an appraisal', () => {
-    renderCard({ ...baseAuction, appraisal: null });
-    expect(screen.queryByText(/abaixo do avaliado/)).not.toBeInTheDocument();
+  it('shows the "Dar Lance" call to action', () => {
+    renderCard(baseAuction);
+    expect(screen.getByText('Dar Lance')).toBeInTheDocument();
   });
 });

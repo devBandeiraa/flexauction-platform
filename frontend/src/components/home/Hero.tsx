@@ -1,7 +1,18 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, Gavel, MapPin, Play, Search, ShieldCheck, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  CircleDollarSign,
+  Gavel,
+  Heart,
+  MapPin,
+  Package,
+  Play,
+  Search,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AuctionImage } from '@/components/auction/AuctionImage';
@@ -13,11 +24,11 @@ import { CATEGORY_OPTIONS, UFS } from '@/lib/constants';
 import type { Auction } from '@/types';
 
 const STATS = [
-  { value: '+5.000', label: 'Usuários' },
-  { value: '+800', label: 'Lotes' },
-  { value: '+300', label: 'Leilões Ativos' },
-  { value: 'R$ 20 Milhões', label: 'Negociados' },
-  { value: '98%', label: 'Satisfação' },
+  { value: '+5.000', label: 'Usuários', icon: Users },
+  { value: '+800', label: 'Lotes', icon: Package },
+  { value: '+300', label: 'Leilões Ativos', icon: Gavel },
+  { value: 'R$ 20 Milhões', label: 'Negociados', icon: CircleDollarSign },
+  { value: '98%', label: 'Satisfação', icon: Heart },
 ];
 
 const selectClass =
@@ -38,7 +49,10 @@ export function Hero() {
     queryKey: ['auctions', { status: 'LIVE', limit: 8 }],
     queryFn: () => listAuctions({ status: 'LIVE', limit: 8 }),
   });
-  const showcase = [...(data?.items ?? [])].sort(byMostBids)[0];
+  // Prefer a property for the hero showcase (matches the premium look), else
+  // fall back to the most-disputed lot of any kind.
+  const sorted = [...(data?.items ?? [])].sort(byMostBids);
+  const showcase = sorted.find((a) => a.category === 'IMOVEL') ?? sorted[0];
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -86,12 +100,19 @@ export function Hero() {
               </Button>
             </div>
 
-            <dl className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-4 lg:justify-start">
+            <dl className="mt-10 flex flex-wrap justify-center gap-x-7 gap-y-4 lg:justify-start">
               {STATS.map((stat) => (
-                <div key={stat.label} className="text-center lg:text-left">
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd className="font-display text-xl font-bold text-white">{stat.value}</dd>
-                  <p className="text-xs text-white/60">{stat.label}</p>
+                <div key={stat.label} className="flex items-center gap-2.5">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-brand-pink">
+                    <stat.icon className="size-4" />
+                  </span>
+                  <div className="text-left">
+                    <dt className="sr-only">{stat.label}</dt>
+                    <dd className="font-display text-lg font-bold leading-tight text-white">
+                      {stat.value}
+                    </dd>
+                    <p className="text-xs text-white/60">{stat.label}</p>
+                  </div>
                 </div>
               ))}
             </dl>

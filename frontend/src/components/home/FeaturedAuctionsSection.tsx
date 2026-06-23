@@ -17,6 +17,7 @@ export function FeaturedAuctionsSection() {
   });
 
   const featured = [...(data?.items ?? [])].sort(byMostBids).slice(0, 4);
+  const topBidId = featured[0]?.id;
 
   return (
     <section className="mx-auto max-w-[1200px] px-6 pb-16 pt-28">
@@ -43,7 +44,7 @@ export function FeaturedAuctionsSection() {
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {featured.map((auction) => (
-            <AuctionCard key={auction.id} auction={auction} />
+            <AuctionCard key={auction.id} auction={auction} isMostBid={auction.id === topBidId} />
           ))}
         </div>
       )}

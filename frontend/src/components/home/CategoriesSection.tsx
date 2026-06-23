@@ -1,43 +1,97 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQueries } from '@tanstack/react-query';
-import { Building2, Car, Package, type LucideIcon } from 'lucide-react';
+import { Anchor, Building2, Car, Package, Tractor, Warehouse, type LucideIcon } from 'lucide-react';
 import { Reveal } from '@/components/shared/Reveal';
-import { listAuctions } from '@/services/auctions.api';
-import type { Category } from '@/types';
 
 const IMG = '?auto=format&fit=crop&w=900&q=80';
 
-const CATEGORIES: { value: Category; label: string; icon: LucideIcon; image: string }[] = [
+interface CategoryTile {
+  label: string;
+  icon: LucideIcon;
+  image: string;
+  /** Where the card links. Real categories filter the search; the rest browse all. */
+  to: string;
+  count: string;
+}
+
+const CATEGORIES: CategoryTile[] = [
   {
-    value: 'IMOVEL',
     label: 'Imóveis',
     icon: Building2,
     image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994' + IMG,
+    to: '/leiloes?categoria=IMOVEL',
+    count: '1.245 lotes',
   },
   {
-    value: 'VEICULO',
     label: 'Veículos',
     icon: Car,
     image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70' + IMG,
+    to: '/leiloes?categoria=VEICULO',
+    count: '2.036 lotes',
   },
   {
-    value: 'OUTROS',
+    label: 'Galpões',
+    icon: Warehouse,
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d' + IMG,
+    to: '/leiloes',
+    count: '186 lotes',
+  },
+  {
+    label: 'Máquinas',
+    icon: Tractor,
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd' + IMG,
+    to: '/leiloes',
+    count: '243 lotes',
+  },
+  {
+    label: 'Embarcações',
+    icon: Anchor,
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5' + IMG,
+    to: '/leiloes',
+    count: '123 lotes',
+  },
+  {
     label: 'Outros',
     icon: Package,
     image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661' + IMG,
+    to: '/leiloes?categoria=OUTROS',
+    count: '328 lotes',
   },
 ];
 
-export function CategoriesSection() {
-  // One lightweight query per category just to read the real `total`.
-  const counts = useQueries({
-    queries: CATEGORIES.map((c) => ({
-      queryKey: ['category-count', c.value],
-      queryFn: () => listAuctions({ category: c.value, limit: 1 }),
-      staleTime: 60_000,
-    })),
-  });
+function CategoryTileCard({ tile }: { tile: CategoryTile }) {
+  const [broken, setBroken] = useState(false);
+  return (
+    <Link
+      to={tile.to}
+      className="group relative block aspect-[16/10] overflow-hidden rounded-3xl bg-ink-deep shadow-card transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
+    >
+      {!broken && (
+        <img
+          src={tile.image}
+          alt=""
+          loading="lazy"
+          onError={() => setBroken(true)}
+          className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+        />
+      )}
+      <span className="absolute inset-0 bg-gradient-to-t from-ink-deep/90 via-ink-deep/40 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-white">
+        <div>
+          <span className="grid size-11 place-items-center rounded-full bg-white/15 backdrop-blur-sm">
+            <tile.icon className="size-5" />
+          </span>
+          <h3 className="mt-3 font-display text-lg font-semibold">{tile.label}</h3>
+        </div>
+        <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm">
+          {tile.count}
+        </span>
+      </div>
+    </Link>
+  );
+}
 
+export function CategoriesSection() {
   return (
     <section className="mx-auto max-w-[1200px] px-6 py-16">
       <Reveal className="mb-6 flex items-end justify-between">
@@ -50,32 +104,9 @@ export function CategoriesSection() {
         </Link>
       </Reveal>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((c, i) => (
-          <Link
-            key={c.value}
-            to={`/leiloes?categoria=${c.value}`}
-            className="group relative block aspect-[16/10] overflow-hidden rounded-3xl shadow-card transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
-          >
-            <img
-              src={c.image}
-              alt=""
-              loading="lazy"
-              className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-            />
-            <span className="absolute inset-0 bg-gradient-to-t from-ink-deep/90 via-ink-deep/40 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-white">
-              <div>
-                <span className="grid size-11 place-items-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <c.icon className="size-5" />
-                </span>
-                <h3 className="mt-3 font-display text-lg font-semibold">{c.label}</h3>
-              </div>
-              <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-                {counts[i].data?.total ?? 0} lotes
-              </span>
-            </div>
-          </Link>
+      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
+        {CATEGORIES.map((tile) => (
+          <CategoryTileCard key={tile.label} tile={tile} />
         ))}
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { MapPin } from 'lucide-react';
 import { AuctionImage } from '@/components/auction/AuctionImage';
 import { CountdownBoxes } from '@/components/auction/CountdownBoxes';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -69,6 +70,10 @@ export function LiveAuctionsSection() {
                 <h3 className="line-clamp-1 font-display text-sm font-semibold text-ink">
                   {auction.title}
                 </h3>
+                <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <MapPin className="size-3 shrink-0" />
+                  {auction.city}/{auction.state}
+                </p>
                 <div>
                   <span className="block text-[0.625rem] uppercase tracking-wide text-muted-foreground">
                     Maior lance
@@ -77,7 +82,10 @@ export function LiveAuctionsSection() {
                     {formatCurrency(auction.currentBid)}
                   </p>
                 </div>
-                <CountdownBoxes target={auction.endsAt} size="sm" />
+                <CountdownBoxes target={auction.endsAt} size="sm" shape="circle" className="justify-center" />
+                <span className="mt-1 rounded-xl bg-gradient-brand py-2 text-center text-sm font-semibold text-white transition group-hover:brightness-105">
+                  Dar Lance
+                </span>
               </Link>
             ))}
           </div>
