@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronRight, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { AuctionImage } from '@/components/auction/AuctionImage';
 import { CountdownBoxes } from '@/components/auction/CountdownBoxes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Reveal } from '@/components/shared/Reveal';
+import { Carousel } from '@/components/shared/Carousel';
 import { listAuctions } from '@/services/auctions.api';
 import { formatCurrency } from '@/lib/format';
 import { onlineCount } from '@/lib/livePresence';
@@ -16,11 +17,11 @@ function byEndingSoonest(a: Auction, b: Auction) {
 
 export function LiveAuctionsSection() {
   const { data, isLoading } = useQuery({
-    queryKey: ['auctions', { status: 'LIVE', limit: 8 }],
-    queryFn: () => listAuctions({ status: 'LIVE', limit: 8 }),
+    queryKey: ['auctions', { status: 'LIVE', limit: 12 }],
+    queryFn: () => listAuctions({ status: 'LIVE', limit: 12 }),
   });
 
-  const live = [...(data?.items ?? [])].sort(byEndingSoonest).slice(0, 4);
+  const live = [...(data?.items ?? [])].sort(byEndingSoonest);
 
   if (!isLoading && live.length === 0) return null;
 
@@ -50,8 +51,7 @@ export function LiveAuctionsSection() {
             ))}
           </div>
         ) : (
-          <div className="relative">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Carousel ariaLabel="Leilões ao vivo">
             {live.map((auction) => (
               <Link
                 key={auction.id}
@@ -97,15 +97,7 @@ export function LiveAuctionsSection() {
                 </span>
               </Link>
             ))}
-          </div>
-            <Link
-              to="/leiloes?status=LIVE"
-              aria-label="Ver mais leilões ao vivo"
-              className="absolute -right-3 top-1/2 hidden size-10 -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-card transition hover:text-brand-pink lg:grid"
-            >
-              <ChevronRight className="size-5" />
-            </Link>
-          </div>
+          </Carousel>
         )}
       </div>
     </section>

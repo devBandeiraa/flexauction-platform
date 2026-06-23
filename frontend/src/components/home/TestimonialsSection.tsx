@@ -43,18 +43,18 @@ export function TestimonialsSection() {
           <h2 className="text-2xl font-bold text-ink">
             Milhares de pessoas já encontraram excelentes oportunidades
           </h2>
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 shadow-card">
-            <span className="font-display text-sm font-semibold text-ink">Excelente</span>
+          <div className="mt-5 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1.5 rounded-2xl border border-line bg-surface px-4 py-3 shadow-card">
+            <span className="whitespace-nowrap font-display text-sm font-semibold text-ink">Excelente</span>
             <span className="flex gap-0.5 text-success" aria-hidden>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="size-4 fill-current" />
               ))}
             </span>
-            <span className="text-sm text-muted-foreground">
-              <strong className="font-semibold text-ink">4,8</strong> de 5
-            </span>
-            <span className="ml-1 inline-flex items-center gap-1 text-sm font-semibold text-success">
+            <span className="inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-success">
               <Star className="size-4 fill-current" /> Trustpilot
+            </span>
+            <span className="w-full whitespace-nowrap text-xs text-muted-foreground">
+              <strong className="font-semibold text-ink">4,8</strong> de 5
             </span>
           </div>
         </Reveal>

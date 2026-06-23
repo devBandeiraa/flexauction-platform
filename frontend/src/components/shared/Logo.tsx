@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils';
 interface LogoProps {
   /** Hide the "FlexAuction" wordmark and render only the flame mark. */
   iconOnly?: boolean;
+  /** Render the wordmark for dark backgrounds (white "Auction"). */
+  onDark?: boolean;
   className?: string;
 }
 
@@ -12,14 +14,14 @@ interface LogoProps {
  *
  * If a real asset is later dropped in /public, swap <LogoMark /> for an <img>.
  */
-export function Logo({ iconOnly = false, className }: LogoProps) {
+export function Logo({ iconOnly = false, onDark = false, className }: LogoProps) {
   return (
     <span className={cn('flex items-center gap-2', className)}>
       <LogoMark className="size-8 shrink-0" />
       {!iconOnly && (
         <span className="font-display text-xl font-bold leading-none tracking-tight">
           <span className="text-brand-pink">Flex</span>
-          <span className="text-ink-soft">Auction</span>
+          <span className={onDark ? 'text-white' : 'text-ink-soft'}>Auction</span>
         </span>
       )}
     </span>

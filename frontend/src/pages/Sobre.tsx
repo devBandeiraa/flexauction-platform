@@ -93,7 +93,7 @@ export function Sobre() {
   return (
     <>
       {/* ---- Hero premium ---- */}
-      <section className="relative overflow-hidden bg-hero">
+      <section data-hero className="relative -mt-16 overflow-hidden bg-hero pt-16">
         <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-6 pb-20 pt-16 lg:grid-cols-2 lg:pt-20">
           <div className="animate-fade-up text-center lg:text-left">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/80">

@@ -24,8 +24,8 @@ function byMostBids(a: Auction, b: Auction) {
 export function Hero() {
   // Reuses the same cached query as the Featured/Live sections.
   const { data } = useQuery({
-    queryKey: ['auctions', { status: 'LIVE', limit: 8 }],
-    queryFn: () => listAuctions({ status: 'LIVE', limit: 8 }),
+    queryKey: ['auctions', { status: 'LIVE', limit: 12 }],
+    queryFn: () => listAuctions({ status: 'LIVE', limit: 12 }),
   });
   // Prefer a property for the hero showcase (matches the premium look), else
   // fall back to the most-disputed lot of any kind.
@@ -33,7 +33,7 @@ export function Hero() {
   const showcase = sorted.find((a) => a.category === 'IMOVEL') ?? sorted[0];
 
   return (
-    <section className="relative overflow-hidden bg-hero">
+    <section data-hero className="relative -mt-16 overflow-hidden bg-hero pt-16">
       <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-14 lg:pt-20">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* ---- Left: message, CTAs, stats ---- */}
@@ -41,7 +41,7 @@ export function Hero() {
             <h1 className="text-balance font-display text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight text-white">
               Arremate imóveis, veículos e oportunidades com até{' '}
               <span className="bg-gradient-brand bg-clip-text text-transparent">70% abaixo</span> do
-              valor de mercado
+              valor de mercado.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-pretty text-lg text-white/70 lg:mx-0">
               Participe de leilões seguros, transparentes e acompanhe seus lances em tempo real.
@@ -134,7 +134,7 @@ function ShowcaseCard({ auction }: { auction: Auction }) {
       </div>
 
       <div className="mt-2">
-        <CountdownBoxes target={auction.endsAt} size="sm" variant="dark" />
+        <CountdownBoxes target={auction.endsAt} size="sm" variant="dark" calm />
       </div>
 
       <h3 className="mt-3 line-clamp-1 font-display text-sm font-semibold text-white">

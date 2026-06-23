@@ -4,23 +4,32 @@ Plataforma de leilões online — imóveis, veículos e outros bens — com lanc
 
 ![CI](https://github.com/devBandeiraa/flexauction-platform/actions/workflows/ci.yml/badge.svg)
 
+## Funcionalidades
+
+- **Catálogo e busca avançada** — filtros por categoria, UF, cidade, faixa de preço e status, com paginação e busca textual.
+- **Lances em tempo real** — disputa ao vivo via WebSocket, com anti-sniping (extensão nos últimos 5 min) e atualização instantânea.
+- **Autenticação segura** — JWT com access + refresh token (cookie httpOnly) e cadastro guiado em etapas.
+- **Painel do usuário** — acompanhamento de lances e lotes favoritos.
+- **Perfis** — participante e leiloeiro (criação e gestão de lotes com upload de imagens).
+- **Experiência premium** — páginas institucionais (Início, Como Funciona, Sobre, Contato) com design responsivo, animações (Framer Motion), tema escuro nos heróis e acessibilidade.
+
 ## Stack
 
 **Backend:** Node.js 20+, Express, TypeScript, Prisma (PostgreSQL), JWT + refresh tokens (httpOnly cookie), Socket.IO, Multer, Zod, pino, Jest.
 
-**Frontend:** React 18, TypeScript, Vite, React Router, Zustand, TanStack Query, React Hook Form + Zod, Tailwind CSS + shadcn/ui, Socket.IO client, Vitest + Testing Library.
+**Frontend:** React 19, TypeScript, Vite, React Router, Zustand, TanStack Query, React Hook Form + Zod, Tailwind CSS + shadcn/ui, Framer Motion, Lucide, Sonner, Socket.IO client, Vitest + Testing Library.
 
 ## Estrutura
 
 ```
-auction-platform/
+flexauction-platform/
 ├── backend/          # API Express + Prisma + Socket.IO
 │   ├── src/
 │   │   ├── controllers/  services/  repositories/
 │   │   ├── middlewares/  routes/    sockets/
-│   │   ├── config/   utils/   app.ts
-│   │   ├── prisma/   (schema.prisma, seed.ts)
-│   │   └── uploads/  (imagens servidas estaticamente)
+│   │   └── config/   utils/   app.ts
+│   ├── prisma/       # schema.prisma, seed.ts, migrations
+│   ├── uploads/      # imagens servidas estaticamente
 │   └── tests/
 ├── frontend/         # SPA React + Vite
 │   └── src/{components,pages,hooks,services,store,lib,types}
@@ -75,7 +84,7 @@ npm run prisma:migrate --workspace=backend   # cria as tabelas
 npm run prisma:seed    --workspace=backend   # popula dados de exemplo
 ```
 
-O seed cria 4 usuários (senha **`senha1234`** para todos) e 11 leilões variados:
+O seed cria 4 usuários (senha **`senha1234`** para todos) e 16 leilões em 6 categorias (imóveis, veículos, galpões, máquinas, embarcações e outros):
 
 | E-mail | Perfil |
 |---|---|

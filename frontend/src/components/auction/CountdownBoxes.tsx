@@ -9,6 +9,8 @@ interface CountdownBoxesProps {
   variant?: 'light' | 'dark';
   /** `square` (default) labelled boxes, or `circle` red rings (live look). */
   shape?: 'square' | 'circle';
+  /** Suppress the red "urgent" styling (calm showcase look, e.g. the hero). */
+  calm?: boolean;
   className?: string;
 }
 
@@ -27,10 +29,11 @@ export function CountdownBoxes({
   size = 'md',
   variant = 'light',
   shape = 'square',
+  calm = false,
   className,
 }: CountdownBoxesProps) {
   const remaining = Math.max(0, useCountdown(target));
-  const urgent = remaining > 0 && remaining < URGENT_THRESHOLD_MS;
+  const urgent = !calm && remaining > 0 && remaining < URGENT_THRESHOLD_MS;
   const totalSeconds = Math.floor(remaining / 1000);
   const values = {
     d: Math.floor(totalSeconds / 86400),
