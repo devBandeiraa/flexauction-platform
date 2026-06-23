@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { FormField } from '@/components/shared/FormField';
 import { PasswordInput } from '@/components/shared/PasswordInput';
-import { GoogleButton } from '@/components/shared/GoogleButton';
+import { SocialAuthButtons } from '@/components/shared/SocialAuthButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
@@ -44,8 +44,8 @@ export function Login() {
   });
 
   return (
-    <AuthLayout>
-      <h1 className="font-display text-2xl font-bold text-ink">Entrar</h1>
+    <AuthLayout headline="Arremate oportunidades únicas.">
+      <h1 className="font-display text-3xl font-bold text-ink">Entrar</h1>
       <p className="mt-1 text-muted-foreground">Acesse sua conta para dar lances e favoritar lotes.</p>
 
       <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
@@ -78,10 +78,10 @@ export function Login() {
       </form>
 
       <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
-        <span className="h-px flex-1 bg-line" /> ou <span className="h-px flex-1 bg-line" />
+        <span className="h-px flex-1 bg-line" /> ou continue com <span className="h-px flex-1 bg-line" />
       </div>
 
-      <GoogleButton label="Continuar com Google" />
+      <SocialAuthButtons />
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Não tem conta?{' '}
