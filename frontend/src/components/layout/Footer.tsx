@@ -6,8 +6,8 @@ const COLUMNS = [
   {
     title: 'Institucional',
     links: [
+      { to: '/sobre', label: 'Sobre nós' },
       { to: '/como-funciona', label: 'Como funciona' },
-      { to: '/como-funciona', label: 'Sobre nós' },
       { to: '/como-funciona', label: 'Termos de uso' },
       { to: '/como-funciona', label: 'Privacidade' },
     ],
@@ -15,17 +15,18 @@ const COLUMNS = [
   {
     title: 'Leilões',
     links: [
-      { to: '/busca?status=LIVE', label: 'Ao vivo' },
-      { to: '/busca?status=UPCOMING', label: 'Em breve' },
-      { to: '/busca?categoria=IMOVEL', label: 'Imóveis' },
-      { to: '/busca?categoria=VEICULO', label: 'Veículos' },
+      { to: '/leiloes?status=LIVE', label: 'Ao vivo' },
+      { to: '/leiloes?status=UPCOMING', label: 'Em breve' },
+      { to: '/leiloes?categoria=IMOVEL', label: 'Imóveis' },
+      { to: '/leiloes?categoria=VEICULO', label: 'Veículos' },
     ],
   },
   {
     title: 'Suporte',
     links: [
-      { to: '/como-funciona', label: 'Central de ajuda' },
-      { to: '/como-funciona', label: 'Perguntas frequentes' },
+      { to: '/contato', label: 'Contato' },
+      { to: '/contato', label: 'Central de ajuda' },
+      { to: '/contato', label: 'Perguntas frequentes' },
     ],
   },
 ];

@@ -46,7 +46,7 @@ describe('AuctionCard', () => {
   it('shows the bid count and links to the lot', () => {
     renderCard(baseAuction);
     expect(screen.getByText('5 lances')).toBeInTheDocument();
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/lote/a1');
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/leilao/a1');
   });
 
   it('shows a discount badge when the bid is below the appraisal', () => {

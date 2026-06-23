@@ -50,7 +50,7 @@ export function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="gradient" size="lg" className="gap-2">
-                <Link to="/busca">
+                <Link to="/leiloes">
                   Ver leilões <ArrowRight className="size-4" />
                 </Link>
               </Button>
@@ -110,7 +110,7 @@ export function Home() {
         <div className="mb-6 flex items-end justify-between">
           <h2 className="text-2xl font-bold text-ink">Leilões em destaque</h2>
           <Link
-            to="/busca?status=LIVE"
+            to="/leiloes?status=LIVE"
             className="text-sm font-medium text-brand-pink transition-colors hover:text-brand-orange"
           >
             Ver todos

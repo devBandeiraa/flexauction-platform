@@ -17,7 +17,7 @@ interface BidCardProps {
 export function BidCard({ auction, className }: BidCardProps) {
   return (
     <Link
-      to={`/lote/${auction.id}`}
+      to={`/leilao/${auction.id}`}
       className={cn(
         'block w-72 rounded-2xl border border-line bg-surface/95 p-3 shadow-float backdrop-blur transition-transform hover:-translate-y-1',
         className,

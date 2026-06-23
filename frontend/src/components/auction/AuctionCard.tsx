@@ -47,7 +47,7 @@ export function AuctionCard({ auction }: { auction: Auction }) {
         <h3 className="line-clamp-2 font-display font-semibold text-ink">
           {/* Stretched link makes the whole card clickable while keeping the
               favourite button a sibling (valid, accessible markup). */}
-          <Link to={`/lote/${auction.id}`} className="after:absolute after:inset-0">
+          <Link to={`/leilao/${auction.id}`} className="after:absolute after:inset-0">
             {auction.title}
           </Link>
         </h3>

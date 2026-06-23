@@ -58,6 +58,11 @@
   h3 {
     @apply font-display tracking-tight;
   }
+
+  /* Programmatic focus target (ScrollToTop) shouldn't show a ring. */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
 }
 
 @layer components {

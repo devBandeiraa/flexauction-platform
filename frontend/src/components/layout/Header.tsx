@@ -20,32 +20,36 @@ import {
 import { Logo } from '@/components/shared/Logo';
 import { SearchBox } from './SearchBox';
 import { useAuth } from '@/hooks/useAuth';
-import { useUiStore } from '@/store/ui.store';
 import { cn } from '@/lib/utils';
 
 const LEILOES = [
-  { to: '/busca', label: 'Todos os leilões' },
-  { to: '/busca?status=LIVE', label: 'Ao vivo' },
-  { to: '/busca?status=UPCOMING', label: 'Em breve' },
-  { to: '/busca?status=CLOSED', label: 'Encerrados' },
+  { to: '/leiloes', label: 'Todos os leilões' },
+  { to: '/leiloes?status=LIVE', label: 'Ao vivo' },
+  { to: '/leiloes?status=UPCOMING', label: 'Em breve' },
+  { to: '/leiloes?status=CLOSED', label: 'Encerrados' },
 ];
 
 const CATEGORIAS = [
-  { to: '/busca?categoria=IMOVEL', label: 'Imóveis' },
-  { to: '/busca?categoria=VEICULO', label: 'Veículos' },
-  { to: '/busca?categoria=OUTROS', label: 'Outros' },
+  { to: '/leiloes?categoria=IMOVEL', label: 'Imóveis' },
+  { to: '/leiloes?categoria=VEICULO', label: 'Veículos' },
+  { to: '/leiloes?categoria=OUTROS', label: 'Outros' },
 ];
 
-// Sobre nós / Contato have no dedicated routes yet; pointed at safe targets.
 const SIMPLE_LINKS = [
-  { to: '/', label: 'Início' },
+  { to: '/', label: 'Início', end: true },
   { to: '/como-funciona', label: 'Como funciona' },
-  { to: '/como-funciona', label: 'Sobre nós' },
+  { to: '/sobre', label: 'Sobre nós' },
+  { to: '/contato', label: 'Contato' },
 ];
+
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  cn(
+    'nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink',
+    isActive && 'text-brand-pink',
+  );
 
 export function Header() {
   const { isAuthenticated, user, logout } = useAuth();
-  const openAuth = useUiStore((s) => s.openAuth);
   const navigate = useNavigate();
 
   const [scrolled, setScrolled] = useState(false);
@@ -59,7 +63,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll while the mobile drawer is open.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => {
@@ -80,31 +83,20 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center lg:flex">
-          <NavLink to="/" className="nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink">
+          <NavLink to="/" end className={navLinkClass}>
             Início
           </NavLink>
           <NavDropdown label="Leilões" items={LEILOES} />
           <NavDropdown label="Categorias" items={CATEGORIAS} />
-          <NavLink
-            to="/como-funciona"
-            className={({ isActive }) =>
-              cn(
-                'nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink',
-                isActive && 'text-brand-pink',
-              )
-            }
-          >
+          <NavLink to="/como-funciona" className={navLinkClass}>
             Como funciona
           </NavLink>
-          <NavLink to="/como-funciona" className="nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink">
+          <NavLink to="/sobre" className={navLinkClass}>
             Sobre nós
           </NavLink>
-          <a
-            href="mailto:contato@flexauction.com"
-            className="nav-underline px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-pink"
-          >
+          <NavLink to="/contato" className={navLinkClass}>
             Contato
-          </a>
+          </NavLink>
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
@@ -141,11 +133,11 @@ export function Header() {
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Button variant="outline" size="sm" onClick={() => openAuth('login')}>
-                Entrar
+              <Button asChild variant="outline" size="sm">
+                <Link to="/login">Entrar</Link>
               </Button>
-              <Button variant="gradient" size="sm" onClick={() => openAuth('register')}>
-                Cadastrar
+              <Button asChild variant="gradient" size="sm">
+                <Link to="/cadastro">Cadastrar</Link>
               </Button>
             </div>
           )}
@@ -195,7 +187,6 @@ function NavDropdown({ label, items }: { label: string; items: { to: string; lab
 
 function MobileDrawer({ onClose }: { onClose: () => void }) {
   const { isAuthenticated, logout } = useAuth();
-  const openAuth = useUiStore((s) => s.openAuth);
 
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -214,26 +205,25 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
         </div>
 
         <nav className="flex-1 overflow-y-auto px-4 py-4">
-          {SIMPLE_LINKS.map((link, i) => (
-            <Link
-              key={`${link.to}-${i}`}
+          {SIMPLE_LINKS.map((link) => (
+            <NavLink
+              key={link.to}
               to={link.to}
+              end={link.end}
               onClick={onClose}
-              className="block rounded-lg px-3 py-3 text-sm font-medium text-ink-soft hover:bg-secondary hover:text-brand-pink"
+              className={({ isActive }) =>
+                cn(
+                  'block rounded-lg px-3 py-3 text-sm font-medium text-ink-soft hover:bg-secondary hover:text-brand-pink',
+                  isActive && 'text-brand-pink',
+                )
+              }
             >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
 
           <DrawerGroup title="Leilões" items={LEILOES} onNavigate={onClose} />
           <DrawerGroup title="Categorias" items={CATEGORIAS} onNavigate={onClose} />
-
-          <a
-            href="mailto:contato@flexauction.com"
-            className="block rounded-lg px-3 py-3 text-sm font-medium text-ink-soft hover:bg-secondary hover:text-brand-pink"
-          >
-            Contato
-          </a>
         </nav>
 
         <div className="border-t border-line p-4">
@@ -243,11 +233,15 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
             </Button>
           ) : (
             <div className="grid gap-2">
-              <Button variant="outline" className="w-full" onClick={() => { openAuth('login'); onClose(); }}>
-                Entrar
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/login" onClick={onClose}>
+                  Entrar
+                </Link>
               </Button>
-              <Button variant="gradient" className="w-full" onClick={() => { openAuth('register'); onClose(); }}>
-                Cadastrar
+              <Button asChild variant="gradient" className="w-full">
+                <Link to="/cadastro" onClick={onClose}>
+                  Cadastrar
+                </Link>
               </Button>
             </div>
           )}

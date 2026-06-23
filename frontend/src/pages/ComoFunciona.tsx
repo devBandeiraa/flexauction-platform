@@ -54,7 +54,7 @@ export function ComoFunciona() {
 
       <div className="mt-8 text-center">
         <Button asChild size="lg" className="bg-accent hover:bg-accent/90">
-          <Link to="/busca">Ver leilões disponíveis</Link>
+          <Link to="/leiloes">Ver leilões disponíveis</Link>
         </Button>
       </div>
     </div>

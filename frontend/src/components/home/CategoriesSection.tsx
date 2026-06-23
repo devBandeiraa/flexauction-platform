@@ -26,7 +26,7 @@ export function CategoriesSection() {
       <div className="mb-6 flex items-end justify-between">
         <h2 className="text-2xl font-bold text-ink">Categorias</h2>
         <Link
-          to="/busca"
+          to="/leiloes"
           className="text-sm font-medium text-brand-pink transition-colors hover:text-brand-orange"
         >
           Ver todos
@@ -37,7 +37,7 @@ export function CategoriesSection() {
         {CATEGORIES.map((c, i) => (
           <CategoryCard
             key={c.value}
-            to={`/busca?categoria=${c.value}`}
+            to={`/leiloes?categoria=${c.value}`}
             label={c.label}
             icon={c.icon}
             count={counts[i].data?.total}
