@@ -4,7 +4,8 @@ const STATS = [
   { end: 5000, prefix: '+', suffix: '', label: 'Usuários' },
   { end: 800, prefix: '+', suffix: '', label: 'Lotes' },
   { end: 300, prefix: '+', suffix: '', label: 'Leilões Ativos' },
-  { end: 20, prefix: 'R$ ', suffix: ' Milhões', label: 'Negociados' },
+  { end: 20, prefix: 'R$ ', suffix: 'M', label: 'Negociados' },
+  { end: 98, prefix: '', suffix: '%', label: 'Satisfação' },
 ] as const;
 
 function StatItem({ stat }: { stat: (typeof STATS)[number] }) {
@@ -23,8 +24,8 @@ function StatItem({ stat }: { stat: (typeof STATS)[number] }) {
 
 export function StatsBand() {
   return (
-    <section className="bg-gradient-brand">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-8 px-6 py-16 sm:grid-cols-4">
+    <section className="bg-hero">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-8 px-6 py-16 sm:grid-cols-3 lg:grid-cols-5">
         {STATS.map((stat) => (
           <StatItem key={stat.label} stat={stat} />
         ))}

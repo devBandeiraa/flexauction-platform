@@ -19,7 +19,7 @@ export function FeaturedAuctionsSection() {
   const featured = [...(data?.items ?? [])].sort(byMostBids).slice(0, 4);
 
   return (
-    <section className="mx-auto max-w-[1200px] px-6 pb-16">
+    <section className="mx-auto max-w-[1200px] px-6 pb-16 pt-28">
       <Reveal className="mb-6 flex items-end justify-between">
         <h2 className="text-2xl font-bold text-ink">Leilões em destaque</h2>
         <Link

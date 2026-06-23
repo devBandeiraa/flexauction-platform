@@ -37,10 +37,24 @@ const TESTIMONIALS = [
 export function TestimonialsSection() {
   return (
     <section className="mx-auto max-w-[1200px] px-6 py-16">
-      <Reveal>
+      <Reveal className="flex flex-col items-center gap-4">
         <h2 className="text-center text-2xl font-bold text-ink">
           Milhares de pessoas já encontraram excelentes oportunidades
         </h2>
+        <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 shadow-card">
+          <span className="font-display text-sm font-semibold text-ink">Excelente</span>
+          <span className="flex gap-0.5 text-success" aria-hidden>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="size-4 fill-current" />
+            ))}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            <strong className="font-semibold text-ink">4,8</strong> de 5
+          </span>
+          <span className="ml-1 inline-flex items-center gap-1 text-sm font-semibold text-success">
+            <Star className="size-4 fill-current" /> Trustpilot
+          </span>
+        </div>
       </Reveal>
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

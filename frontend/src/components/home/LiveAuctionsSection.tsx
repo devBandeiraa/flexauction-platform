@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Reveal } from '@/components/shared/Reveal';
 import { listAuctions } from '@/services/auctions.api';
 import { formatCurrency } from '@/lib/format';
+import { onlineCount } from '@/lib/livePresence';
 import type { Auction } from '@/types';
 
 function byEndingSoonest(a: Auction, b: Auction) {
@@ -54,13 +55,28 @@ export function LiveAuctionsSection() {
                     category={auction.category}
                     className="size-full transition-transform duration-300 group-hover:scale-105"
                   />
+                  <span className="absolute left-2 top-2 inline-flex items-center gap-1.5 rounded-full bg-destructive px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-destructive-foreground">
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-white" />
+                    </span>
+                    Ao vivo
+                  </span>
+                  <span className="absolute right-2 top-2 rounded-full bg-ink-deep/70 px-2 py-0.5 text-[0.625rem] font-medium text-white backdrop-blur-sm">
+                    {onlineCount(auction.id)} online
+                  </span>
                 </div>
                 <h3 className="line-clamp-1 font-display text-sm font-semibold text-ink">
                   {auction.title}
                 </h3>
-                <p className="font-display text-lg font-bold tabular-nums text-ink">
-                  {formatCurrency(auction.currentBid)}
-                </p>
+                <div>
+                  <span className="block text-[0.625rem] uppercase tracking-wide text-muted-foreground">
+                    Maior lance
+                  </span>
+                  <p className="font-display text-lg font-bold tabular-nums text-ink">
+                    {formatCurrency(auction.currentBid)}
+                  </p>
+                </div>
                 <CountdownBoxes target={auction.endsAt} size="sm" />
               </Link>
             ))}
