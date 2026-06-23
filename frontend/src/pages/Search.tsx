@@ -14,12 +14,14 @@ function paramsToFilters(params: URLSearchParams): AuctionListParams {
   const filters: AuctionListParams = {};
   const category = params.get('categoria');
   const state = params.get('uf');
+  const city = params.get('cidade');
   const status = params.get('status');
   const min = params.get('min');
   const max = params.get('max');
   const q = params.get('q');
   if (category) filters.category = category;
   if (state) filters.state = state;
+  if (city) filters.city = city;
   if (status) filters.status = status;
   if (min) filters.minPrice = Number(min);
   if (max) filters.maxPrice = Number(max);

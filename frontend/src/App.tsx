@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { Toaster } from '@/components/ui/sonner';
 import { Layout } from '@/components/layout/Layout';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
@@ -45,7 +46,7 @@ function App() {
   useBootstrapAuth();
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <ScrollToTop />
       <Suspense fallback={<RouteFallback />}>
         <Routes>
@@ -78,7 +79,7 @@ function App() {
         </Routes>
       </Suspense>
       <Toaster richColors position="top-right" />
-    </>
+    </MotionConfig>
   );
 }
 

@@ -30,7 +30,7 @@ export function Newsletter() {
     <section className="border-t border-line bg-surface">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between">
         <div className="max-w-md">
-          <h2 className="text-2xl font-bold text-ink">Receba oportunidades exclusivas</h2>
+          <h2 className="text-2xl font-bold text-ink">Receba oportunidades exclusivas antes de todos</h2>
           <p className="mt-1 text-muted-foreground">
             Cadastre-se e receba em primeira mão os melhores leilões.
           </p>
@@ -51,7 +51,7 @@ export function Newsletter() {
                   setEmail(e.target.value);
                   if (error) setError(null);
                 }}
-                placeholder="Seu melhor e-mail"
+                placeholder="Digite seu melhor e-mail"
                 aria-label="E-mail para newsletter"
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? 'newsletter-error' : undefined}
@@ -61,7 +61,7 @@ export function Newsletter() {
                 )}
               />
               <Button type="submit" variant="gradient" size="lg" className="shrink-0">
-                Cadastrar
+                Receber Oportunidades
               </Button>
             </div>
             {error && (

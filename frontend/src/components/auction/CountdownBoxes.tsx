@@ -9,30 +9,40 @@ interface CountdownBoxesProps {
 }
 
 const BOXES = [
+  { key: 'd', label: 'Dias' },
   { key: 'h', label: 'Horas' },
   { key: 'm', label: 'Min' },
   { key: 's', label: 'Seg' },
 ] as const;
 
-/** HH : MM : SS countdown rendered as labelled, tabular-nums boxes. */
+const URGENT_THRESHOLD_MS = 24 * 60 * 60 * 1000;
+
+/** DD : HH : MM : SS countdown rendered as labelled, tabular-nums boxes. Turns red and pulses under 24h. */
 export function CountdownBoxes({ target, size = 'md', className }: CountdownBoxesProps) {
   const remaining = Math.max(0, useCountdown(target));
+  const urgent = remaining > 0 && remaining < URGENT_THRESHOLD_MS;
   const totalSeconds = Math.floor(remaining / 1000);
   const values = {
-    h: Math.floor(totalSeconds / 3600),
+    d: Math.floor(totalSeconds / 86400),
+    h: Math.floor((totalSeconds % 86400) / 3600),
     m: Math.floor((totalSeconds % 3600) / 60),
     s: totalSeconds % 60,
   };
   const pad = (n: number) => String(n).padStart(2, '0');
 
   return (
-    <div className={cn('flex items-start gap-1.5', className)} role="timer" aria-label="Tempo restante">
+    <div
+      className={cn('flex items-start gap-1.5', urgent && 'animate-pulse', className)}
+      role="timer"
+      aria-label="Tempo restante"
+    >
       {BOXES.map((box, i) => (
         <div key={box.key} className="flex items-start gap-1.5">
           <div className="flex flex-col items-center">
             <span
               className={cn(
-                'grid place-items-center rounded-lg bg-secondary font-display font-bold tabular-nums text-ink',
+                'grid place-items-center rounded-lg font-display font-bold tabular-nums',
+                urgent ? 'bg-destructive text-destructive-foreground' : 'bg-secondary text-ink',
                 size === 'sm' ? 'h-9 w-9 text-base' : 'h-11 w-11 text-lg',
               )}
             >

@@ -18,6 +18,7 @@ const baseAuction: Auction = {
   appraisal: '800000',
   startsAt: new Date(Date.now() - 3600_000).toISOString(),
   endsAt: new Date(Date.now() + 3600_000).toISOString(),
+  createdAt: new Date(Date.now() - 7 * 24 * 3600_000).toISOString(),
   status: 'LIVE',
   auctioneer: { id: 'au1', name: 'Casa de Leilões' },
   auctioneerId: 'au1',

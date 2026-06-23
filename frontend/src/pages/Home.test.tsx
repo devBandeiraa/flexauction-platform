@@ -23,7 +23,7 @@ describe('Home', () => {
   it('renders the hero headline', () => {
     renderHome();
     expect(
-      screen.getByRole('heading', { name: /Os melhores negócios você encontra aqui/i }),
+      screen.getByRole('heading', { name: /Arremate imóveis, veículos e oportunidades/i }),
     ).toBeInTheDocument();
   });
 });

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { Building2, Car, Package } from 'lucide-react';
 import { CategoryCard } from '@/components/auction/CategoryCard';
+import { Reveal } from '@/components/shared/Reveal';
 import { listAuctions } from '@/services/auctions.api';
 import type { Category } from '@/types';
 
@@ -23,7 +24,7 @@ export function CategoriesSection() {
 
   return (
     <section className="mx-auto max-w-[1200px] px-6 py-16">
-      <div className="mb-6 flex items-end justify-between">
+      <Reveal className="mb-6 flex items-end justify-between">
         <h2 className="text-2xl font-bold text-ink">Categorias</h2>
         <Link
           to="/leiloes"
@@ -31,7 +32,7 @@ export function CategoriesSection() {
         >
           Ver todos
         </Link>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {CATEGORIES.map((c, i) => (

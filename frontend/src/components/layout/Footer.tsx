@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Globe, Lock, Mail, MessageCircle, Share2 } from 'lucide-react';
+import { Briefcase, Camera, Lock, Mail, MessageCircle } from 'lucide-react';
 import { Logo } from '@/components/shared/Logo';
 
 const COLUMNS = [
@@ -10,6 +10,7 @@ const COLUMNS = [
       { to: '/como-funciona', label: 'Como funciona' },
       { to: '/como-funciona', label: 'Termos de uso' },
       { to: '/como-funciona', label: 'Privacidade' },
+      { to: '/como-funciona', label: 'LGPD' },
     ],
   },
   {
@@ -32,10 +33,10 @@ const COLUMNS = [
 ];
 
 const SOCIALS = [
-  { icon: Globe, label: 'Site', href: 'https://flexauction.com' },
   { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/' },
   { icon: Mail, label: 'E-mail', href: 'mailto:contato@flexauction.com' },
-  { icon: Share2, label: 'Compartilhar', href: 'https://flexauction.com' },
+  { icon: Camera, label: 'Instagram', href: 'https://instagram.com/flexauction' },
+  { icon: Briefcase, label: 'LinkedIn', href: 'https://linkedin.com/company/flexauction' },
 ];
 
 export function Footer() {
@@ -50,6 +51,7 @@ export function Footer() {
           <p className="inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
             <Lock className="size-3.5" /> Conexão segura SSL
           </p>
+          <p className="text-xs text-muted-foreground">CNPJ 12.345.678/0001-90 (exemplo)</p>
         </div>
 
         {COLUMNS.map((col) => (

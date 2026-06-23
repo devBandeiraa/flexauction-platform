@@ -1,4 +1,5 @@
 import { Headphones, Radio, ShieldCheck, Sparkles } from 'lucide-react';
+import { Reveal } from '@/components/shared/Reveal';
 
 const ITEMS = [
   {
@@ -27,7 +28,9 @@ export function WhyChoose() {
   return (
     <section className="bg-gradient-brand text-white">
       <div className="mx-auto max-w-[1200px] px-6 py-14">
-        <h2 className="text-2xl font-bold text-white">Por que escolher a FlexAuction?</h2>
+        <Reveal>
+          <h2 className="text-2xl font-bold text-white">Por que escolher a FlexAuction?</h2>
+        </Reveal>
         <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.map((item) => (
             <div key={item.title} className="flex flex-col gap-3">

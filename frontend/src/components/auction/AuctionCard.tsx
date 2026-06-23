@@ -16,21 +16,27 @@ function discountPercent(currentBid: string, appraisal: string | null): number |
   return Math.round((1 - bid / appr) * 100);
 }
 
-export function AuctionCard({ auction }: { auction: Auction }) {
+interface AuctionCardProps {
+  auction: Auction;
+}
+
+export function AuctionCard({ auction }: AuctionCardProps) {
   const discount = discountPercent(auction.currentBid, auction.appraisal);
   const bidCount = auction._count?.bids ?? 0;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-card transition duration-200 hover:-translate-y-1 hover:shadow-card-hover">
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover">
       <div className="relative aspect-[4/3] overflow-hidden">
         <AuctionImage
           images={auction.images}
           alt={auction.title}
           category={auction.category}
-          className="size-full transition-transform duration-300 group-hover:scale-105"
+          className="size-full transition-transform duration-500 ease-out group-hover:scale-110"
         />
 
-        <CategoryBadge category={auction.category} className="absolute left-3 top-3" />
+        <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+          <CategoryBadge category={auction.category} />
+        </div>
         <FavoriteButton auctionId={auction.id} className="absolute right-3 top-3 z-10" />
 
         {auction.status === 'LIVE' && (
