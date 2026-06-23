@@ -36,7 +36,7 @@ export function AuctionDetail() {
       <div className="mx-auto max-w-[1200px] px-6 py-16 text-center">
         <p className="text-muted-foreground">Lote não encontrado.</p>
         <Button asChild variant="outline" className="mt-4">
-          <Link to="/busca">Voltar para a busca</Link>
+          <Link to="/leiloes">Voltar para a busca</Link>
         </Button>
       </div>
     );
@@ -45,7 +45,7 @@ export function AuctionDetail() {
   return (
     <div className="mx-auto max-w-[1200px] px-6 py-8">
       <Link
-        to="/busca"
+        to="/leiloes"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand-pink"
       >
         <ArrowLeft className="size-4" /> Voltar

@@ -20,6 +20,8 @@ export default {
         ink: {
           DEFAULT: 'hsl(var(--ink) / <alpha-value>)',
           soft: 'hsl(var(--ink-soft) / <alpha-value>)',
+          deep: 'hsl(var(--ink-deep) / <alpha-value>)',
+          night: 'hsl(var(--ink-night) / <alpha-value>)',
         },
         line: 'hsl(var(--line) / <alpha-value>)',
         surface: 'hsl(var(--surface) / <alpha-value>)',

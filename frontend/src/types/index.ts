@@ -1,5 +1,5 @@
 export type Role = 'USER' | 'AUCTIONEER';
-export type Category = 'IMOVEL' | 'VEICULO' | 'OUTROS';
+export type Category = 'IMOVEL' | 'VEICULO' | 'GALPAO' | 'MAQUINA' | 'EMBARCACAO' | 'OUTROS';
 export type AuctionStatus = 'UPCOMING' | 'LIVE' | 'CLOSED';
 
 export interface User {
@@ -27,6 +27,7 @@ export interface Auction {
   appraisal: string | null;
   startsAt: string;
   endsAt: string;
+  createdAt: string;
   status: AuctionStatus;
   auctioneer: AuctioneerSummary;
   auctioneerId: string;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const category = z.enum(['IMOVEL', 'VEICULO', 'OUTROS']);
+const category = z.enum(['IMOVEL', 'VEICULO', 'GALPAO', 'MAQUINA', 'EMBARCACAO', 'OUTROS']);
 const status = z.enum(['UPCOMING', 'LIVE', 'CLOSED']);
 
 export const createAuctionSchema = z

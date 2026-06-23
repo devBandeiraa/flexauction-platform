@@ -33,7 +33,7 @@ export function SearchBox() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     if (term.trim()) {
-      navigate(`/busca?q=${encodeURIComponent(term.trim())}`);
+      navigate(`/leiloes?q=${encodeURIComponent(term.trim())}`);
       setOpen(false);
     }
   }
@@ -66,7 +66,7 @@ export function SearchBox() {
               <button
                 type="button"
                 onClick={() => {
-                  navigate(`/lote/${r.id}`);
+                  navigate(`/leilao/${r.id}`);
                   setOpen(false);
                   setTerm('');
                 }}

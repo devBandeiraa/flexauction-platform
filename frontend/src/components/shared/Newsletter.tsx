@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -27,17 +27,24 @@ export function Newsletter() {
   }
 
   return (
-    <section className="border-t border-line bg-surface">
+    <section className="bg-gradient-brand text-white">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-md">
-          <h2 className="text-2xl font-bold text-ink">Receba oportunidades exclusivas</h2>
-          <p className="mt-1 text-muted-foreground">
-            Cadastre-se e receba em primeira mão os melhores leilões.
-          </p>
+        <div className="flex max-w-md items-start gap-4">
+          <span className="hidden size-12 shrink-0 place-items-center rounded-2xl bg-white/15 sm:grid">
+            <Mail className="size-6" />
+          </span>
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              Receba oportunidades exclusivas antes de todos
+            </h2>
+            <p className="mt-1 text-white/80">
+              Cadastre-se e receba novos leilões em primeira mão.
+            </p>
+          </div>
         </div>
 
         {done ? (
-          <p className="flex items-center gap-2 font-medium text-success">
+          <p className="flex items-center gap-2 font-medium text-white">
             <CheckCircle2 className="size-5" /> Pronto! Você está na lista.
           </p>
         ) : (
@@ -51,24 +58,31 @@ export function Newsletter() {
                   setEmail(e.target.value);
                   if (error) setError(null);
                 }}
-                placeholder="Seu melhor e-mail"
+                placeholder="Digite seu melhor e-mail"
                 aria-label="E-mail para newsletter"
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? 'newsletter-error' : undefined}
                 className={cn(
-                  'h-11 rounded-xl focus-visible:ring-brand-pink',
-                  error && 'border-destructive focus-visible:ring-destructive',
+                  'h-11 rounded-xl border-transparent bg-white text-ink focus-visible:ring-white',
+                  error && 'ring-2 ring-destructive',
                 )}
               />
-              <Button type="submit" variant="gradient" size="lg" className="shrink-0">
-                Cadastrar
+              <Button
+                type="submit"
+                size="lg"
+                className="shrink-0 bg-white text-brand-pink hover:bg-white/90"
+              >
+                Receber Oportunidades
               </Button>
             </div>
             {error && (
-              <p id="newsletter-error" role="alert" className="mt-2 text-sm text-destructive">
+              <p id="newsletter-error" role="alert" className="mt-2 text-sm text-white">
                 {error}
               </p>
             )}
+            <p className="mt-2 text-xs text-white/70">
+              Não enviamos spam. Cancelar inscrição a qualquer momento.
+            </p>
           </form>
         )}
       </div>

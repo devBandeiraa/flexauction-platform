@@ -8,6 +8,9 @@ export const UFS = [
 export const CATEGORY_OPTIONS: { value: Category; label: string }[] = [
   { value: 'IMOVEL', label: 'Imóveis' },
   { value: 'VEICULO', label: 'Veículos' },
+  { value: 'GALPAO', label: 'Galpões' },
+  { value: 'MAQUINA', label: 'Máquinas' },
+  { value: 'EMBARCACAO', label: 'Embarcações' },
   { value: 'OUTROS', label: 'Outros' },
 ];
 

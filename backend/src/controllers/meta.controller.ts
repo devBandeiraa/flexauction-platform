@@ -5,6 +5,9 @@ import * as auctionService from '../services/auction.service.js';
 const CATEGORIES = [
   { value: 'IMOVEL', label: 'Imóveis' },
   { value: 'VEICULO', label: 'Veículos' },
+  { value: 'GALPAO', label: 'Galpões' },
+  { value: 'MAQUINA', label: 'Máquinas' },
+  { value: 'EMBARCACAO', label: 'Embarcações' },
   { value: 'OUTROS', label: 'Outros' },
 ] as const;
 

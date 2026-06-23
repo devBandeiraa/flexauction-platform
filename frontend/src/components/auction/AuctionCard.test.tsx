@@ -18,6 +18,7 @@ const baseAuction: Auction = {
   appraisal: '800000',
   startsAt: new Date(Date.now() - 3600_000).toISOString(),
   endsAt: new Date(Date.now() + 3600_000).toISOString(),
+  createdAt: new Date(Date.now() - 7 * 24 * 3600_000).toISOString(),
   status: 'LIVE',
   auctioneer: { id: 'au1', name: 'Casa de Leilões' },
   auctioneerId: 'au1',
@@ -46,17 +47,16 @@ describe('AuctionCard', () => {
   it('shows the bid count and links to the lot', () => {
     renderCard(baseAuction);
     expect(screen.getByText('5 lances')).toBeInTheDocument();
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/lote/a1');
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/leilao/a1');
   });
 
-  it('shows a discount badge when the bid is below the appraisal', () => {
+  it('shows a promo badge (ending soon, since it ends within 24h)', () => {
     renderCard(baseAuction);
-    // 400000 vs 800000 appraisal -> 50%
-    expect(screen.getByText('50% abaixo do avaliado')).toBeInTheDocument();
+    expect(screen.getByText(/Encerrando hoje/)).toBeInTheDocument();
   });
 
-  it('omits the discount badge without an appraisal', () => {
-    renderCard({ ...baseAuction, appraisal: null });
-    expect(screen.queryByText(/abaixo do avaliado/)).not.toBeInTheDocument();
+  it('shows the "Dar Lance" call to action', () => {
+    renderCard(baseAuction);
+    expect(screen.getByText('Dar Lance')).toBeInTheDocument();
   });
 });

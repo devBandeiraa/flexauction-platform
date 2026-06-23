@@ -5,17 +5,19 @@
 @layer base {
   :root {
     /* ---- Brand palette (HSL channels, so /opacity modifiers work) ---- */
-    --brand-pink: 343 78% 53%; /* #E5295E */
-    --brand-orange: 19 100% 62%; /* #FF7A3D */
+    --brand-pink: 349 100% 65%; /* #FF4D6D */
+    --brand-orange: 16 100% 60%; /* #FF6B35 */
     --brand-cyan: 190 73% 49%; /* #22B8D6 */
-    --gradient-brand: linear-gradient(135deg, hsl(343 78% 53%) 0%, hsl(19 100% 62%) 100%);
+    --gradient-brand: linear-gradient(135deg, hsl(349 100% 65%) 0%, hsl(16 100% 60%) 100%);
 
     --ink: 215 28% 17%; /* #1F2937 */
     --ink-soft: 217 19% 27%; /* #374151 */
+    --ink-deep: 222 47% 11%; /* #0F172A — premium dark surfaces (hero, footer) */
+    --ink-night: 221 39% 11%; /* #111827 */
     --muted-text: 220 9% 46%; /* #6B7280 */
     --line: 220 13% 91%; /* #E5E7EB */
     --surface: 0 0% 100%; /* #FFFFFF */
-    --bg: 220 27% 98%; /* #F8F9FB */
+    --bg: 210 40% 98%; /* #F8FAFC */
 
     /* ---- Layered shadows ---- */
     --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
@@ -23,7 +25,7 @@
     --shadow-float: 0 20px 48px rgba(16, 24, 40, 0.18);
 
     /* ---- shadcn tokens (HSL triplets) remapped to the brand ---- */
-    --background: 220 27% 98%;
+    --background: 210 40% 98%;
     --foreground: 215 28% 17%;
     --card: 0 0% 100%;
     --card-foreground: 215 28% 17%;
@@ -35,7 +37,7 @@
     --secondary-foreground: 215 28% 17%;
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
-    --accent: 343 78% 53%;
+    --accent: 349 100% 65%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
@@ -43,8 +45,8 @@
     --success-foreground: 0 0% 100%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 343 78% 53%;
-    --radius: 0.75rem;
+    --ring: 349 100% 65%;
+    --radius: 1rem;
   }
 }
 
@@ -58,12 +60,44 @@
   h3 {
     @apply font-display tracking-tight;
   }
+
+  /* Programmatic focus target (ScrollToTop) shouldn't show a ring. */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
 }
 
 @layer components {
   /* Primary brand gradient surface — buttons, banners, highlights. */
   .bg-gradient-brand {
     background-image: var(--gradient-brand);
+  }
+
+  /* Premium dark hero: deep slate base + brand-tinted glows for depth. */
+  .bg-hero {
+    background-color: hsl(var(--ink-deep));
+    background-image:
+      radial-gradient(60% 80% at 85% 15%, hsl(var(--brand-pink) / 0.28) 0%, transparent 60%),
+      radial-gradient(50% 70% at 10% 90%, hsl(var(--brand-orange) / 0.18) 0%, transparent 55%),
+      linear-gradient(160deg, hsl(var(--ink-deep)) 0%, hsl(var(--ink-night)) 100%);
+  }
+
+  /* Stats band: deep navy on the left melting into the brand coral. */
+  .bg-gradient-stats {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--ink-deep)) 0%,
+      hsl(var(--ink-night)) 38%,
+      hsl(var(--brand-pink)) 100%
+    );
+  }
+
+  /* Frosted glass panel for cards floating over imagery. */
+  .glass-panel {
+    background-color: hsl(0 0% 100% / 0.08);
+    border: 1px solid hsl(0 0% 100% / 0.16);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   /* Animated nav underline (left→right on hover / active). */

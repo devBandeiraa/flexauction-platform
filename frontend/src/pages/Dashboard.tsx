@@ -122,7 +122,7 @@ function BidsTab() {
         return (
           <li key={bid.id}>
             <Link
-              to={`/lote/${bid.auction.id}`}
+              to={`/leilao/${bid.auction.id}`}
               className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-3 shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover"
             >
               <div className="size-16 shrink-0 overflow-hidden rounded-xl">
@@ -209,7 +209,7 @@ function Empty({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line py-16 text-center">
       <p className="text-muted-foreground">{message}</p>
-      <Link to="/busca" className="text-sm font-medium text-brand-pink hover:underline">
+      <Link to="/leiloes" className="text-sm font-medium text-brand-pink hover:underline">
         Explorar leilões
       </Link>
     </div>
