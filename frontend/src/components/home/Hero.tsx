@@ -24,8 +24,8 @@ function byMostBids(a: Auction, b: Auction) {
 export function Hero() {
   // Reuses the same cached query as the Featured/Live sections.
   const { data } = useQuery({
-    queryKey: ['auctions', { status: 'LIVE', limit: 8 }],
-    queryFn: () => listAuctions({ status: 'LIVE', limit: 8 }),
+    queryKey: ['auctions', { status: 'LIVE', limit: 12 }],
+    queryFn: () => listAuctions({ status: 'LIVE', limit: 12 }),
   });
   // Prefer a property for the hero showcase (matches the premium look), else
   // fall back to the most-disputed lot of any kind.

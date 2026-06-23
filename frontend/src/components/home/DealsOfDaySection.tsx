@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronRight } from 'lucide-react';
 import { AuctionImage } from '@/components/auction/AuctionImage';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Reveal } from '@/components/shared/Reveal';
+import { Carousel } from '@/components/shared/Carousel';
 import { listAuctions } from '@/services/auctions.api';
 import { formatCurrency } from '@/lib/format';
 import type { Auction } from '@/types';
@@ -23,15 +23,14 @@ function withDiscount(auction: Auction): Deal | null {
 
 export function DealsOfDaySection() {
   const { data, isLoading } = useQuery({
-    queryKey: ['auctions', { status: 'LIVE', limit: 8 }],
-    queryFn: () => listAuctions({ status: 'LIVE', limit: 8 }),
+    queryKey: ['auctions', { status: 'LIVE', limit: 12 }],
+    queryFn: () => listAuctions({ status: 'LIVE', limit: 12 }),
   });
 
   const deals = (data?.items ?? [])
     .map(withDiscount)
     .filter((d): d is Deal => d !== null && d.discount > 0)
-    .sort((a, b) => b.discount - a.discount)
-    .slice(0, 4);
+    .sort((a, b) => b.discount - a.discount);
 
   if (!isLoading && deals.length === 0) return null;
 
@@ -57,9 +56,8 @@ export function DealsOfDaySection() {
           ))}
         </div>
       ) : (
-        <div className="relative">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {deals.map(({ auction, discount }) => (
+        <Carousel ariaLabel="Oportunidades do dia">
+          {deals.map(({ auction, discount }) => (
               <Link
                 key={auction.id}
                 to={`/leilao/${auction.id}`}
@@ -93,15 +91,7 @@ export function DealsOfDaySection() {
                 </div>
               </Link>
             ))}
-          </div>
-          <Link
-            to="/leiloes?status=LIVE"
-            aria-label="Ver mais oportunidades"
-            className="absolute -right-3 top-1/2 hidden size-10 -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-card transition hover:text-brand-pink lg:grid"
-          >
-            <ChevronRight className="size-5" />
-          </Link>
-        </div>
+        </Carousel>
       )}
     </section>
   );
